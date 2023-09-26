@@ -1,26 +1,17 @@
-import Vue from 'vue';
-import App from './App.vue';
-import VueRouter from 'vue-router';
-import BookList from './components/BookList.vue';
-import AuthorList from './components/AuthorList.vue';
-import LoanList from './components/LoanList.vue';
+import './assets/main.css'
+// import 'dotenv/config'
 
-Vue.use(VueRouter);
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 
-const routes = [
-  { path: '/books', component: BookList },
-  { path: '/authors', component: AuthorList },
-  { path: '/loans', component: LoanList },
-];
+import App from './App.vue'
+import router from './router'
 
-const router = new VueRouter({
-  routes,
-  mode: 'history',
-});
+const app = createApp(App)
 
-new Vue({
-  el: '#app',
-  router,
-  render: (h) => h(App),
-});
+app.use(createPinia())
+app.use(router)
+
+app.mount('#app')
+
 
