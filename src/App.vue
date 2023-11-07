@@ -5,7 +5,7 @@
     <nav>
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/generos">Gêneros</RouterLink>
-      <RouterLink to="/filmes">Filmes</RouterLink>
+      <RouterLink to="/filmes">Livros</RouterLink>
     </nav>
   </header>
   <main>
@@ -23,6 +23,9 @@ nav {
   width: 100%;
   text-align: center;
   margin-top: 1rem;
+  background-color: #5a5df0;
+  color: aliceblue;
+  text-decoration: none;
 }
 
 nav a.router-link-exact-active {
