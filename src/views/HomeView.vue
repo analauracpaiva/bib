@@ -1,66 +1,42 @@
-<script setup></script>
-
 <template>
-  <div class="main">
-    <div class="hero">
-      <img class="heroImg" src="../assets/imgs/1000_F_142899942_BJ9qtVpCEXdGpYHA9ZzhTTpBUY0ei6zj.jpg">
+    <div class="main">
+        <div class="CardsView">
+            <h1>Notícias</h1>
+            <div class="NoticiaCard">
+                <div class="NoticiaImgBox">
+                    <img class="NoticiaImg" src="alguma coisa">
+                </div>
+                <div class="NoticiaText">
+                    <h1>Titulo</h1>
+                    <p class="text"> Lorem ipsum Argo et sum Dolor</p>
+                </div>
+            </div>
+              
+        </div>
     </div>
-    <h1>Livros em Nossa Biblioteca!</h1>
-    <div class="bookWeek">
-      <div class="bookBox">
-        <img class="bookPic" src="aa" alt="fotoLivro" />
-        <p class="bookTitle">Titulo Livro</p>
-        <p class="bookGenre">Genero</p>
-        <p class="bookAuthor">Autor</p>
-      </div>
-      
-      
-    </div>
-  </div>
 </template>
-
 <style scoped>
-
-.bookBox{
-  width: 15%;
-  box-shadow: 1px 2px 5px 1px gray;
-  display: flex;
-  flex-direction: column;
-  padding: 1%;
+.NoticiaImg{
+    width: 100%;
+    aspect-ratio: 4/3;
 }
-.hero{
-  width: 100%;
-
+.NoticiaImgBox{
+    width: 40%;
 }
-.heroImg{
-  width: 100%;
-
+.CardsView{
+    padding: 5% 15%;
 }
-
-.bookPic{
-  width: 100%;
-  aspect-ratio: 6/8;
-  outline: 1px solid black;
+.NoticiaCard{
+    width: 100%;
+    display: flex;
+    outline: 1px solid #0b5394;
+    border-radius: 0.4vh;
+    background-color: #f1f1f1;
+    margin: 2% 0%;
 }
-.bookTitle{
-  font-size: large;
-  font-weight: bold;
-}
-.bookGenre , .bookAuthor{
-  opacity: 80%;
-  line-height: 1%;
-
-}
-.main{
-  width: 100%;
-}
-.bookWeek{
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  padding: 0 15%;
-  gap: 5%
-
+.NoticiaText{
+    min-width: 60%;
+    width: 60%;
+    padding: 0 1%;
 }
 </style>
-
