@@ -21,6 +21,11 @@ const currentTitulo = reactive({
   professor: ''
 })
 
+const currentAutor = reactive({
+  nome: '',
+  email: '',
+})
+
 function onFileChange(e) {
   file.value = e.target.files[0]
   coverUrl.value = URL.createObjectURL(file.value)
@@ -42,7 +47,6 @@ onMounted(async () => {
   categorias.value = data
 })
 
-
 async function save() {
   isLoading.value = true
   const image = await imageService.uploadImage(file.value)
@@ -57,6 +61,17 @@ async function save() {
   })
   const data = await TituloService.getAllTitulos()
   titulos.value = data
+  isLoading.value = false
+}
+async function saveAutor() {
+  isLoading.value = true
+  await AutorService.saveTitulo(currentAutor)
+  Object.assign(currentTitulo, {
+    nome: '',
+    email: '',
+  })
+  const data = await AutorService.getAllAutores()
+  autores.value = data
   isLoading.value = false
 }
 
@@ -74,19 +89,55 @@ function editTitulo(titulo) {
 </script>
 
 <template>
-  <Loading />
+  <Loading v-model:active="isLoading" is-full-page class="loading" />
   <div class="main">
     <h1 class="Title">Livros em Nossa Biblioteca!</h1>
     <div class="bookform">
-      <form>
+      <form class="form" @submit.prevent="save">
         <h3>Adicione um Livro</h3>
-        <input v-model="currentTitulo.titulo" type="text" placeholder="Título">
-        <select v-model="currentTitulo.autor">
-          <option v-for="categoria in categorias" :key="categoria.id">{{ categoria.descricao }}</option>
-        </select>
-        <select v-model="currentTitulo.categoria">
-          <option v-for="autor in autores" :key="autor.id">{{ autor.nome }}</option>
-        </select>
+        <div class="form-col">
+          <div class="input-col">
+            <input v-model="currentTitulo.titulo" type="text" placeholder="Título" />
+            <select v-model="currentTitulo.autor">
+              <option
+                v-for="categoria in categorias"
+                :key="categoria.id"
+                v-bind:value="categoria.id"
+              >
+                {{ categoria.descricao }}
+              </option>
+            </select>
+            <select v-model="currentTitulo.categoria">
+              <option v-for="autor in autores" :key="autor.id" v-bind:value="autor.id">
+                {{ autor.nome }}
+              </option>
+            </select>
+          </div>
+          <div class="input-col">
+            <input
+              type="file"
+              accept="image/png, image/jpeg"
+              name="file_upload"
+              @change="onFileChange"
+            />
+            <div id="preview">
+              <div class="cover">
+                <img class="img" v-if="coverUrl" :src="coverUrl" />
+              </div>
+            </div>
+          </div>
+          <div class="input-col autor">
+            <h3>Adicione um Autor</h3>
+            <input
+              v-model="currentAutor.nome" placeholder="Nome"
+            />
+            <input
+              v-model="currentAutor.email" placeholder="Email"
+            />
+            
+          </div>
+        </div>
+        <button type="submit" class="button">Enviar</button>
       </form>
     </div>
     <div class="bookWeek">
@@ -95,22 +146,57 @@ function editTitulo(titulo) {
         <p class="bookTitle">{{ titulo.titulo }}</p>
         <p class="bookGenre">{{ titulo.categoria.descricao }}</p>
         <p class="bookAuthor">{{ titulo.autor.nome }}</p>
+        <button @click="editTitulo">Editar</button>
+        <button @click="deleteTitulo(titulo)">Deletar</button>
       </div>
-      
-      
     </div>
   </div>
 </template>
 
 <style scoped>
-.bookform{
-  padding: 0% 15%; 
+.autor{
+  display: flex;
+  align-items: normal !important;
 }
-.Title{
+.input-col {
+  display: flex;
+  flex-direction: column;
+  margin-right: 5%;
+}
+.img {
+  width: 100%;
+  aspect-ratio: 6/8;
+}
+.cover {
+  width: 60%;
+  aspect-ratio: 6/8;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.form-col {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+input {
+  margin-top: 1%;
+}
+button {
+  margin-top: 1%;
+}
+.bookform {
+  padding: 1% 15%;
+  background-color: #0b5394;
+  margin-bottom: 2%;
+}
+.Title {
   margin-left: 15%;
   margin-top: 5%;
 }
-.bookBox{
+.bookBox {
   width: 15%;
   box-shadow: 1px 2px 5px 1px gray;
   display: flex;
@@ -119,39 +205,35 @@ function editTitulo(titulo) {
   background-color: #f1f1f1;
   border-radius: 1vh;
 }
-.hero{
+.hero {
   width: 100%;
-
 }
-.heroImg{
+.heroImg {
   width: 100%;
-
 }
 
-.bookPic{
+.bookPic {
   width: 100%;
   aspect-ratio: 6/8;
   outline: 1px solid black;
 }
-.bookTitle{
+.bookTitle {
   font-size: large;
   font-weight: bold;
 }
-.bookGenre , .bookAuthor{
+.bookGenre,
+.bookAuthor {
   opacity: 80%;
   line-height: 1%;
-
 }
-.main{
+.main {
   width: 100%;
 }
-.bookWeek{
+.bookWeek {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   padding: 0% 15%;
-  gap: 5%
-
+  gap: 5%;
 }
 </style>
-
